@@ -1,0 +1,10 @@
+{
+    "botToken": "BOT_TOKEN_HERE",
+    "ownerID": "OWNER_ID_HERE",
+    "clientID": "BOTS_CLIENT_ID_HERE",
+    "prefix": "PREFIX_HERE",
+    "passes": INT, // Recommend 4, Delete this comment after!
+    "clientOptions": {
+        "fetchAllMembers": true
+    }
+}
