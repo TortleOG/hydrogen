@@ -4,21 +4,20 @@ exports.run = async (client, msg, [term]) => {
 
   yt.setKey(client.config.youtubeAPIKey);
 
-  yt.search(term, 1, (err, res) => {
+  yt.search(term, 5, (err, res) => {
     if (err) {
-      console.error(err);
+      return console.error(err);
     }
-    else {
-      // console.log(JSON.stringify(res, null, 2));
-      let send = [];
-      let baseURL = "https://www.youtube.com/watch?v=";
-      send.push("```md");
-      send.push("Search Results\n");
-      send.push(`Video Title: ${res.items[0].snippet.title}`);
-      send.push(`Video URL = ${baseURL}${res.items[0].id.videoId}`);
-      send.push("```");
-      return msg.channel.send(send.join("\n"));
-    }
+    let send = [];
+    let baseURL = "https://www.youtube.com/watch?v=";
+    send.push("```md");
+    send.push("🎵 Search Results 🎵\n=====================\n");
+    res.items.forEach((i) => {
+      send.push(`Video Title: ${i.snippet.title}`);
+      send.push(`Video URL = ${baseURL}${i.id.videoId}\n`);
+    });
+    send.push("```");
+    return msg.channel.send(send.join("\n"));
   });
 };
 
