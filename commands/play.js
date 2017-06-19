@@ -39,10 +39,10 @@ exports.run = async (client, msg) => {
         return dispatcher.end();
       }
       else if (m.content.startsWith(msg.guild.conf.prefix + "volume")) {
-        if (Math.round(dispatcher.volume*50) >= 100) return msg.channel.send(`**Volume: ${Math.round(dispatcher.volume*50)}%**`);
-        else if (Math.round(dispatcher.volume*50) <= 0) return msg.channel.send(`**Volume: ${Math.round(dispatcher.volume*50)}%**`);
         let amount = parseInt(m.content.split(" ")[1]);
-        if (amount < 0) return msg.channel.send(`:x: ${msg.author} | Volume cannot be negative`);
+        if (amount < 0) return msg.channel.send(`:x: ${msg.author} | Volume cannot be negative.`);
+        else if (amount > 100) return msg.channel.send(`:x: ${msg.author} | Volume cannot be negative.`);
+        if (Math.round(dispatcher.volume*50) <= 0) return msg.channel.send(`**Volume: ${Math.round(dispatcher.volume*50)}%**`);
         dispatcher.setVolume(amount / 50);
       }
       else if (m.content.startsWith(msg.guild.conf.prefix + "time")) {
