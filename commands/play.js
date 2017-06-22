@@ -51,7 +51,7 @@ exports.run = async (client, msg) => {
     });
     dispatcher.on("end", () => {
       collector.stop();
-      play(client.queue[msg.guild.id].songs.shift());
+      setTimeout(() => play(client.queue[msg.guild.id].songs.shift()), 100);
     });
     dispatcher.on("error", async err => {
       await msg.channel.send("Error: " + err);
