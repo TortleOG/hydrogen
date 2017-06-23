@@ -5,16 +5,21 @@ exports.run = async (client, msg, [term]) => {
   yt.setKey(client.config.youtubeAPIKey);
 
   yt.search(term, 5, (err, res) => {
-    if (err) {
-      return console.error(err);
-    }
+    if (err) return console.error(err);
     let send = [];
-    let baseURL = "https://www.youtube.com/watch?v=";
     send.push("```md");
     send.push("🎵 Search Results 🎵\n=====================\n");
     res.items.forEach((i) => {
+      if (i.id.kind === "youtube#channel") {
+        send.push(`Channel Name: ${i.snippet.channelTitle}`);
+        return send.push(`Channel URL: https://www.youtube.com/user/${i.snippet.channelTitle}\n`);
+      }
+      else if (i.id.kind === "youtube#playlist") {
+        send.push(`Playlist Name: ${i.snippet.title}`);
+        return send.push(`Playlist Author: ${i.snippet.channelTitle}\n`);
+      }
       send.push(`Video Title: ${i.snippet.title}`);
-      send.push(`Video URL = ${baseURL}${i.id.videoId}\n`);
+      return send.push(`Video URL: https://www.youtube.com/watch?v=${i.id.videoId}\n`);
     });
     send.push("```");
     return msg.channel.send(send.join("\n"));
@@ -24,7 +29,7 @@ exports.run = async (client, msg, [term]) => {
 exports.conf = {
   enabled: true,
   runIn: ["text"],
-  aliases: ["p"], 
+  aliases: ["s"], 
   permLevel: 0,
   botPerms: [],
   requiredFuncs: [],
