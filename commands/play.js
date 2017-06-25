@@ -39,7 +39,7 @@ exports.run = async (client, msg) => {
         return dispatcher.end();
       }
       else if (m.content.startsWith(msg.guild.conf.prefix + "volume")) {
-        if (isNaN(amount)) return;
+        if (isNaN(m.content.split(" ")[1])) return;
         let amount = parseInt(m.content.split(" ")[1]);
         if (amount < 0) return msg.channel.send(`:x: ${msg.author} | Volume cannot be negative.`);
         else if (amount > 100) return msg.channel.send(`:x: ${msg.author} | Volume cannot be greater than 100.`);
