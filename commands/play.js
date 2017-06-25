@@ -18,7 +18,7 @@ exports.run = async (client, msg) => {
     if (song === undefined) {
       await msg.channel.send("**Queue is empty. Leaving channel...**");
       client.queue[msg.guild.id].playing = false;
-      msg.member.voiceChannel.leave();
+      return msg.member.voiceChannel.leave();
     }
     msg.channel.send(`Playing **${song.title}** as requested by: **${song.requester}**.`);
     dispatcher = msg.guild.voiceConnection.playStream(yt(song.url, {audioonly: true}), {passes: client.config.passes});
@@ -39,11 +39,13 @@ exports.run = async (client, msg) => {
         return dispatcher.end();
       }
       else if (m.content.startsWith(msg.guild.conf.prefix + "volume")) {
+        if (isNaN(amount)) return;
         let amount = parseInt(m.content.split(" ")[1]);
         if (amount < 0) return msg.channel.send(`:x: ${msg.author} | Volume cannot be negative.`);
         else if (amount > 100) return msg.channel.send(`:x: ${msg.author} | Volume cannot be greater than 100.`);
         if (Math.round(dispatcher.volume*50) <= 0) return msg.channel.send(`**Volume: ${Math.round(dispatcher.volume*50)}%**`);
         dispatcher.setVolume(amount / 50);
+        msg.channel.send(`:loud_sound: **Volume: ${amount}**.`);
       }
       else if (m.content.startsWith(msg.guild.conf.prefix + "time")) {
         msg.channel.send(`**Time: ${Math.floor(dispatcher.time / 60000)}:${Math.floor((dispatcher.time % 60000)/1000) <10 ? '0'+Math.floor((dispatcher.time % 60000)/1000) : Math.floor((dispatcher.time % 60000)/1000)}**`);
